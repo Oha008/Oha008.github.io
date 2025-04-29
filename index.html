@@ -1,31 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <title>署名してアプリに戻る</title>
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <title>MetaMask署名</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-    <h1>ウォレット接続と署名</h1>
-    <button id="connectButton">MetaMaskで署名する</button>
+<h1>MetaMask署名ページ</h1>
+<p id="status">MetaMaskに接続中...</p>
 
-    <script>
-        document.getElementById('connectButton').addEventListener('click', async () => {
-            if (typeof window.ethereum !== 'undefined') {
-                const provider = new ethers.providers.Web3Provider(window.ethereum);
-                await provider.send('eth_requestAccounts', []);
-                const signer = provider.getSigner();
-                const address = await signer.getAddress();
+<script>
+(async () => {
+  if (typeof window.ethereum === 'undefined') {
+    document.getElementById('status').innerText = 'MetaMaskが見つかりません。';
+    return;
+  }
 
-                const message = "このメッセージに署名してください";
-                const signature = await signer.signMessage(message);
+  const urlParams = new URLSearchParams(window.location.search);
+  const message = urlParams.get('message') || 'ログイン確認';
 
-                // アプリにDeepLinkで戻す
-                const callbackUrl = `yourappscheme://callback?address=${encodeURIComponent(address)}&signature=${encodeURIComponent(signature)}`;
-                window.location.href = callbackUrl;
-            } else {
-                alert('MetaMaskが検出されませんでした。');
-            }
-        });
-    </script>
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send('eth_requestAccounts', []);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+
+    const signature = await signer.signMessage(message);
+
+    // 署名後、自分のアプリに戻る
+    const appDeeplink = `yourappscheme://callback?address=${encodeURIComponent(address)}&signature=${encodeURIComponent(signature)}`;
+    window.location.href = appDeeplink;
+  } catch (error) {
+    console.error('署名失敗:', error);
+    document.getElementById('status').innerText = '署名に失敗しました。';
+  }
+})();
+</script>
 </body>
 </html>
