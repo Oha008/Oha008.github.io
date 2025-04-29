@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>MetaMask署名</title>
+  <title>アプリに戻るボタン</title>
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 </head>
 <body>
 <h1>MetaMask署名ページ</h1>
+    <h1>アプリに戻る</h1>
+  <button id="sendAddress">アプリに戻る</button>
 <p id="status">MetaMaskに接続中...!!!!</p>
 
 <script>
@@ -28,15 +31,25 @@
     const signature = await signer.signMessage(message);
 
     // 署名後、自分のアプリに戻る
-    setTimeout(() => {
-      const redirectUrl = `appscheme://callback?address=${address}&signature=${encodeURIComponent(signature)}`;
-      window.location.href = redirectUrl;
-      }, 9000);
   } catch (error) {
     console.error('署名失敗:', error);
     document.getElementById('status').innerText = '署名に失敗しました。';
   }
 })();
+
+document.getElementById('sendAddress').addEventListener('click', () => {
+      // ここで本物のウォレットアドレスに置き換えてください
+    const walletAddress = "0x1234567890abcdef1234567890abcdef12345678";
+
+      // DeepLink でアプリに戻るURL
+     const deeplink = `appscheme://callback?address=${encodeURIComponent(walletAddress)}`;
+
+      // 3秒待ってから戻る（タイミング調整用）
+      setTimeout(() => {
+        window.location.href = deeplink;
+      }, 3000);
+    });
+
 </script>
 </body>
 </html>
