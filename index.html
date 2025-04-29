@@ -28,7 +28,7 @@
     const signature = await signer.signMessage(message);
 
     // 署名後、自分のアプリに戻る
-    const appDeeplink = `yourappscheme://callback?address=${encodeURIComponent(address)}&signature=${encodeURIComponent(signature)}`;
+    const appDeeplink = `Appscheme://callback?address=${encodeURIComponent(address)}&signature=${encodeURIComponent(signature)}`;
     window.location.href = appDeeplink;
   } catch (error) {
     console.error('署名失敗:', error);
