@@ -1,55 +1,38 @@
 <!DOCTYPE html>
 <html lang="ja">
+<link rel="stylesheet" href="style.css">
+
 <head>
-  <meta charset="UTF-8">
-  <title>MetaMask署名</title>
-  <title>アプリに戻るボタン</title>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Learn to Earn</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #status { margin-top: 20px; }
+        button { padding: 10px 20px; margin: 5px; }
+        #userInfo { display: none; } /* 初期状態では非表示 */
+        #claimReward { display: none; } /* 初期状態では非表示 */
+        #map { width: 100%; height: 400px; margin-top: 20px; }
+    </style>
+    <!-- Leaflet.jsのスタイルシート -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
 </head>
 <body>
-<h1>MetaMask署名ページ</h1>
-    <h1>アプリに戻る</h1>
-  <button id="sendAddress">アプリに戻る</button>
-<p id="status">MetaMaskに接続中...!!!!</p>
+    <h1>Learn to Earn</h1>
+    <button id="connectWallet">ウォレットを接続</button>
+    <div id="userInfo">
+        <p>接続アカウント: <span id="account"></span></p>
+        <p>報酬残高: <span id="balance">0</span> RWT</p>
+        <button id="checkNFT">NFT所有状況を確認</button>
+        <button id="claimReward">報酬を受け取る</button>
+    </div>
+    <div id="status"></div>
+    <!-- 位置情報とロケーション範囲の表示 -->
+    <div id="map"></div>
 
-<script>
-(async () => {
-  if (typeof window.ethereum === 'undefined') {
-    document.getElementById('status').innerText = 'MetaMaskが見つかりません。';
-    return;
-  }
-
-  const urlParams = new URLSearchParams(window.location.search);
-  const message = urlParams.get('message') || 'ログイン確認';
-
-  try {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send('eth_requestAccounts', []);
-    const signer = provider.getSigner();
-    const address = await signer.getAddress();
-
-    const signature = await signer.signMessage(message);
-
-    // 署名後、自分のアプリに戻る
-  } catch (error) {
-    console.error('署名失敗:', error);
-    document.getElementById('status').innerText = '署名に失敗しました。';
-  }
-})();
-
-document.getElementById('sendAddress').addEventListener('click', () => {
-      // ここで本物のウォレットアドレスに置き換えてください
-    const walletAddress = "0x1234567890abcdef1234567890abcdef12345678";
-
-      // DeepLink でアプリに戻るURL
-     const deeplink = `appscheme://callback?address=${encodeURIComponent(walletAddress)}`;
-
-      // 3秒待ってから戻る（タイミング調整用）
-      setTimeout(() => {
-        window.location.href = deeplink;
-      }, 3000);
-    });
-
-</script>
+    <!-- Leaflet.jsのスクリプト -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <!-- JavaScriptファイルの読み込み -->
+    <script src="app1.js"></script>
 </body>
 </html>
