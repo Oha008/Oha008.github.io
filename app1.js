@@ -1321,7 +1321,7 @@ async function checkNFTOwnership() {
 
 let isEligible = false;
 let timer = null;
-const requiredTime = 10; // 必要な滞在時間（秒）
+const requiredTime = 3; // 必要な滞在時間（秒）
 let elapsedTime = 0;
 let hankei = 100;
 let ido = 35.64498042238834;
@@ -1443,5 +1443,6 @@ function startTimer() {
 connectWalletButton.addEventListener('click', connectWallet);
 claimRewardButton.addEventListener('click', claimReward);
 checkNFTButton.addEventListener('click', checkNFTOwnership);
+
 
 
