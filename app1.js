@@ -1323,7 +1323,7 @@ let isEligible = false;
 let timer = null;
 const requiredTime = 10; // 必要な滞在時間（秒）
 let elapsedTime = 0;
-let hankei = 500;
+let hankei = 50;
 let ido = 35.64498042238834;
 let keido = 139.4083764643375;
 
@@ -1443,3 +1443,4 @@ function startTimer() {
 connectWalletButton.addEventListener('click', connectWallet);
 claimRewardButton.addEventListener('click', claimReward);
 checkNFTButton.addEventListener('click', checkNFTOwnership);
+
